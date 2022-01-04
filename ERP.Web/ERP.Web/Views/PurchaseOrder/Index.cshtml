@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "List";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Purchase Order</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="card">
+    <div class="card-header">
+        <button type="button" onclick="Edit();" class="btn btn-primary">Create</button>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Prchase Order Name</th>
+                    <th>Status</th>
+                    <th style="width: 40px">Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>Draft</td>
+                        <td><a href="#" class="nav-link"><i class="fas fa-edit"></i></a></td>
+                    </tr>
+                    
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script type="text/javascript">
+    function Edit() {
+          window.location.href = '/PurchaseOrder/Edit?id=New';
+      }
+</script>

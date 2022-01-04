@@ -1,0 +1,116 @@
+﻿@using Models
+@model PurchaseOrderModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Purchase Order</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-primary">
+
+            <form id="frmPO" method="post" action="/PurchaseOrder/Save">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+
+                        <label>Date:</label>
+                        @Html.TextBoxFor(m => m.Date, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
+
+                        <label>Purchase Order Name:</label>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <button type="button" onclick="AddLis()" class="btn btn-primary">Add List Items</button>
+                </div>
+                <input type="hidden" id="lisrowcount" value="-1" />
+                <table id="Lis" width="100%" border="1">
+                    <thead>
+                        <tr style="background-color:#6533bd;color:#ffffff;">
+                            <th>Item Name</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+  
+                    </tbody>
+                </table>
+                <div class="col-xs-12">
+                    <button type="button" onclick="Submit()" class="btn btn-primary">Submit</button>
+                    <button type="button" onclick="SaveToDraft()" class="btn btn-primary">Save to Draft</button>
+                    <button type="button" class="btn btn-danger">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script>
+      function Submit()
+      {
+           var table = document.getElementById("Lis");
+            let subTotal = Array.from(table.rows).slice(2).reduce((total, row) => {
+            return total + parseFloat(row.cells[2].innerHTML);
+            }, 0);
+            if(subTotal>1000)
+            {
+                alert("Total amount of PO (sum of its LIs) cannot exceed 10000");
+            }
+            else
+            {
+                document.getElementById("frmPO").submit();
+          window.location.href = '/PurchaseOrder';
+            }
+          
+      }
+      function SaveToDraft()
+      {
+
+          document.getElementById("frmPO").submit();
+          window.location.href = '/PurchaseOrder';
+      }
+      function AddLis()
+      {
+          var row;
+          var nrow;
+         
+          if ($("#lisrowcount").val() == "-1")
+          {
+              row = 0;
+              nrow = parseInt(row);
+          }
+          else
+          {
+              row = $("#lisrowcount").val();
+              nrow = parseInt(row) + 1;
+          }
+          if(nrow>9)
+          {
+              alert("Max number of LIs per PO should be limited by 10");
+          }
+          else
+          {
+              var str = "<tr id='trLis_" + nrow +"'><td><input type='Text' class='form-control'/></td><td><input type='Text' class='form-control'/></td><td><input type='Text' class='form-control'/></td><td><input type='button' class='btn btn-danger' value='Remove' onclick='Delete(" + nrow + ")'/></td></tr >"
+        
+          $("#Lis").append(str);
+          $("#lisrowcount").val(nrow);
+
+          }
+
+      }
+      function Delete(Row) {
+          $('#trLis_' + Row).remove();
+      }
+
+</script>
